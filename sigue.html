@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display de Valores Oscilantes</title>
+    <style>
+        .contenedor {
+            display: flex;
+        }
+        .columna {
+            flex: 1;
+            padding: 10px;
+        }
+        #valorDisplay {
+            font-size: 60px; /* Tamaño aún más grande para el display */
+            margin-bottom: 20px;
+            text-align: center; /* Centrar el texto */
+        }
+        .boton {
+            display: block;
+            margin-bottom: 10px; /* Espacio entre los botones */
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <div class="columna">
+        <button class="boton" onclick="iniciarOscilacion(co60)">Iniciar Oscilación Co-60</button>
+        <button class="boton" onclick="iniciarOscilacion(cs137)">Iniciar Oscilación Cs-137</button>
+        <button class="boton" onclick="detenerOscilacion()">Detener Oscilación</button>
+        <button class="boton" onclick="resetearValor()">Resetear Valor</button>
+    </div>
+    <div class="columna">
+        <div id="valorDisplay">0 µSv/h</div>
+    </div>
+</div>
+
+<script>
+    var co60 = [10, 20, 30, 40, 50]; // Valores de ejemplo para Co-60
+    var cs137 = [60, 70, 80, 90, 100]; // Valores de ejemplo para Cs-137
+    var indiceActual = 0;
+    var oscilador = null;
+
+    function mostrarValor(datos) {
+        var display = document.getElementById('valorDisplay');
+        display.innerText = datos[indiceActual] + ' µSv/h';
+        
+        indiceActual++;
+        if (indiceActual >= datos.length) {
+            indiceActual = 0;
+        }
+    }
+
+    function iniciarOscilacion(datos) {
+        detenerOscilacion(); // Detiene cualquier oscilación en curso
+        oscilador = setInterval(function() { mostrarValor(datos); }, 1000); // Cambia valor cada segundo
+    }
+
+    function detenerOscilacion() {
+        clearInterval(oscilador);
+        oscilador = null;
+    }
+
+    function resetearValor() {
+        detenerOscilacion();
+        var display = document.getElementById('valorDisplay');
+        display.innerText = '0 µSv/h';
+        indiceActual = 0;
+    }
+</script>
+
+</body>
+</html>
